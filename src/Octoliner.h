@@ -1,4 +1,4 @@
-#include <arduino.h>
+#include <Arduino.h>
 
 #ifndef _GPIO_EXPANDER_
 #define _GPIO_EXPANDER_
