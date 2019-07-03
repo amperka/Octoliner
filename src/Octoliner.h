@@ -54,7 +54,7 @@ public:
     void digitalWritePort(uint16_t value);
     void pinModePort(uint16_t value, uint8_t mode);
     void adcSpeed(uint8_t speed);
-	float mapLine(int binaryLine[8]);
+    float mapLine(int binaryLine[8]);
 
 private:
     uint8_t _i2caddress;
