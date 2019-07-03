@@ -137,13 +137,8 @@ int Octoliner::digitalReadPort()
     return result;
 }
 
-int Octoliner::digitalRead(int pin)
-{
-    int result = digitalReadPort();
-    if (result >= 0) {
-        result = ((result & (1<<pin))? 1 : 0); //:)
-    }
-    return result;
+int Octoliner::digitalRead(int pin) {
+    return (digitalReadPort() >> pin) & 1;
 }
 
 float Octoliner::mapLine(int binaryLine[8]) {
