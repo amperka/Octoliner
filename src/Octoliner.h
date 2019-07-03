@@ -61,7 +61,7 @@ public:
     void saveAddr();
     void reset();
     int digitalRead(int pin);
-    int analogRead(int pin); //, uint8_t avgCount = 2);
+    int analogRead(int pin);
     uint32_t getUID();
     int digitalReadPort();
     void digitalWritePort(uint16_t value);
