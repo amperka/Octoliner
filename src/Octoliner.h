@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
-#ifndef _GPIO_EXPANDER_
-#define _GPIO_EXPANDER_
+#ifndef __GPIOEXPANDER_H__
+#define __GPIOEXPANDER_H__
 
 #ifndef INPUT_PULLDOWN
 #define INPUT_PULLDOWN 0x3
@@ -67,4 +67,4 @@ private:
     uint32_t read32bit();
 };
 
-#endif //_GPIO_EXPANDER_
+#endif //__GPIOEXPANDER_H__
