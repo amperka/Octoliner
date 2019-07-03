@@ -20,9 +20,9 @@ void Octoliner::writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value,
     Wire.write(pin);
     uint8_t temp;
     temp = (value >> 8) & 0xff;
-    Wire.write(temp); // sent to device most significant byte of value
+    Wire.write(temp); // Send MSB of 'value' to the device
     temp = value & 0xff;
-    Wire.write(temp); // sent to device less significant byte of value
+    Wire.write(temp); // Send LSB of 'value' to the device
     Wire.endTransmission(sendStop);
 }
 
@@ -31,9 +31,9 @@ void Octoliner::writeCmd16BitData(IOcommand command, uint16_t data) {
     Wire.write((uint8_t)command);
     uint8_t temp;
     temp = (data >> 8) & 0xff;
-    Wire.write(temp); // sent to device most significant byte of data
+    Wire.write(temp); // Send MSB of 'data' to the device
     temp = data & 0xff;
-    Wire.write(temp); // sent to device less significant byte of data
+    Wire.write(temp); // Send LSB of 'data' to the device
     Wire.endTransmission();
 }
 
@@ -252,16 +252,16 @@ void Octoliner::changeAddrWithUID(uint8_t newAddr) {
     Wire.write((uint8_t)SEND_MASTER_READED_UID);
     uint8_t temp;
     temp = (uid >> 24) & 0xff;
-    Wire.write(temp); // sent to device most significant byte of uid
+    Wire.write(temp); // Send MSB of 'uid' to the device
 
     temp = (uid >> 16) & 0xff;
-    Wire.write(temp); // sent to device second byte of uid
+    Wire.write(temp); // Send 2nd byte of 'uid' to the device
 
     temp = (uid >> 8) & 0xff;
-    Wire.write(temp); // sent to device third byte of uid
+    Wire.write(temp); // Send 3rd byte of 'uid' to the device
 
     temp = (uid)&0xff;
-    Wire.write(temp); // sent to device less significant byte of uid
+    Wire.write(temp); // Send LSB of 'uid' to the device
     Wire.endTransmission();
 
     delay(1);
