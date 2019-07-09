@@ -5,6 +5,7 @@ void Octoliner::begin(uint8_t value) {
     Wire.begin();
     pwmFreq(30000);
     analogWrite(0, value);
+    value = 0;
 }
 
 void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {

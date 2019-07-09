@@ -78,6 +78,7 @@ private:
     void writeCmd(IOcommand command, bool sendStop = true);
     int read16Bit();
     uint32_t read32bit();
+    float value;
 };
 
 #endif //__GPIOEXPANDER_H__
