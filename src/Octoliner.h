@@ -52,6 +52,7 @@ public:
     Octoliner();
     Octoliner(uint8_t i2caddress);
     void begin(uint8_t value);
+    void begin(void);
     void digitalWrite(int pin, bool value);
     void pinMode(int pin, uint8_t mode);
     void analogWrite(int pin, uint8_t pulseWidth);

@@ -7,6 +7,12 @@ void Octoliner::begin(uint8_t value) {
     analogWrite(0, value);
 }
 
+void Octoliner::begin(void) {
+    Wire.begin();
+    pwmFreq(30000);
+    analogWrite(0, 200);
+}
+
 void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {
     Wire.beginTransmission(_i2caddress);
     Wire.write((uint8_t)command);
