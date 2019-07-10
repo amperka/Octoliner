@@ -4,13 +4,15 @@
 void Octoliner::begin(uint8_t brightness) {
     Wire.begin();
     pwmFreq(30000);
-    analogWrite(0, brightness);
+    analogWrite(0, value);
+    value = 0;
 }
 
 void Octoliner::begin(void) {
     Wire.begin();
     pwmFreq(30000);
     analogWrite(0, 200);
+    value = 0;
 }
 
 void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {
