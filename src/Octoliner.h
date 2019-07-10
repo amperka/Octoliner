@@ -24,6 +24,10 @@
 #endif
 // DEFAULT_GPIOEXP_ADDR
 
+// Pins definiion
+constexpr uint8_t LED_BRIGHTNESS_PIN = 9;
+constexpr uint8_t SENSITIVITY_PIN = 0;
+
 enum IOcommand {
     WHO_AM_I //get UID
     ,
@@ -84,8 +88,6 @@ public:
     float mapLine(int binaryLine[8]);
 
 private:
-    const uint8_t _ledBrightnessPin = 9;
-    const uint8_t _sensePin = 0;
     uint8_t _i2caddress;
     float _value;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);

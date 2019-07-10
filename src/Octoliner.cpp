@@ -147,11 +147,11 @@ int Octoliner::digitalRead(int pin) {
 }
 
 void Octoliner::setSensitivity(uint8_t sense) {
-    analogWrite(_sensePin, sense);
+    analogWrite(SENSITIVITY_PIN, sense);
 }
 
 void Octoliner::setBrightness(uint8_t brightness) {
-    analogWrite(_ledBrightnessPin, brightness);
+    analogWrite(LED_BRIGHTNESS_PIN, brightness);
 }
 
 float Octoliner::mapLine(int binaryLine[8]) {
