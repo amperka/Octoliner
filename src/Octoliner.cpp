@@ -20,15 +20,15 @@ void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {
     Wire.endTransmission(sendStop);
 }
 
-void Octoliner::writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value, bool sendStop) {
+void Octoliner::writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t data, bool sendStop) {
     Wire.beginTransmission(_i2caddress);
     Wire.write((uint8_t)command);
     Wire.write(pin);
     uint8_t temp;
-    temp = (value >> 8) & 0xff;
-    Wire.write(temp); // Send MSB of 'value' to the device
-    temp = value & 0xff;
-    Wire.write(temp); // Send LSB of 'value' to the device
+    temp = (data >> 8) & 0xff;
+    Wire.write(temp); // Send MSB of 'data' to the device
+    temp = data & 0xff;
+    Wire.write(temp); // Send LSB of 'data' to the device
     Wire.endTransmission(sendStop);
 }
 
@@ -99,14 +99,14 @@ Octoliner::Octoliner(uint8_t i2caddress) {
     _i2caddress = i2caddress;
 }
 
-void Octoliner::digitalWritePort(uint16_t value) {
-    writeCmd16BitData(DIGITAL_WRITE_HIGH, value);
-    writeCmd16BitData(DIGITAL_WRITE_LOW, ~value);
+void Octoliner::digitalWritePort(uint16_t data) {
+    writeCmd16BitData(DIGITAL_WRITE_HIGH, data);
+    writeCmd16BitData(DIGITAL_WRITE_LOW, ~data);
 }
 
-void Octoliner::digitalWrite(int pin, bool value) {
+void Octoliner::digitalWrite(int pin, bool state) {
     uint16_t sendData = 1 << pin;
-    if (value) {
+    if (state) {
         writeCmd16BitData(DIGITAL_WRITE_HIGH, sendData);
     } else {
         writeCmd16BitData(DIGITAL_WRITE_LOW, sendData);
@@ -202,15 +202,15 @@ float Octoliner::mapLine(int binaryLine[8]) {
     return value;
 }
 
-void Octoliner::pinModePort(uint16_t value, uint8_t mode) {
+void Octoliner::pinModePort(uint16_t mask, uint8_t mode) {
     if (mode == INPUT) {
-        writeCmd16BitData(PORT_MODE_INPUT, value);
+        writeCmd16BitData(PORT_MODE_INPUT, mask);
     } else if (mode == OUTPUT) {
-        writeCmd16BitData(PORT_MODE_OUTPUT, value);
+        writeCmd16BitData(PORT_MODE_OUTPUT, mask);
     } else if (mode == INPUT_PULLUP) {
-        writeCmd16BitData(PORT_MODE_PULLUP, value);
+        writeCmd16BitData(PORT_MODE_PULLUP, mask);
     } else if (mode == INPUT_PULLDOWN) {
-        writeCmd16BitData(PORT_MODE_PULLDOWN, value);
+        writeCmd16BitData(PORT_MODE_PULLDOWN, mask);
     }
 }
 
