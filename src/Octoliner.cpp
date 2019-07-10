@@ -1,18 +1,29 @@
+/*
+ * This file is a part of Dragster car set library
+ *
+ * Realise: octoliner object - 8-point line-folowing sensor driver
+ * © Amperka LLC (https://amperka.com, dev@amperka.com)
+ * 
+ * Author: Vasily Basalaev <vasily@amperka.ru>
+ * Refactored by: Yury Botov <by@amperka.com>
+ * License: GPLv3, all text here must be included in any redistribution.
+ */
+
 #include "Octoliner.h"
 #include <Wire.h>
 
 void Octoliner::begin(uint8_t brightness) {
     Wire.begin();
     pwmFreq(30000);
-    analogWrite(0, value);
-    value = 0;
+    analogWrite(0, brightness);
+    _value = 0;
 }
 
 void Octoliner::begin(void) {
     Wire.begin();
     pwmFreq(30000);
     analogWrite(0, 200);
-    value = 0;
+    _value = 0;
 }
 
 void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {
@@ -154,54 +165,54 @@ float Octoliner::mapLine(int binaryLine[8]) {
     }
     switch (pattern) {
     case 0b00011000:
-        value = 0;
+        _value = 0;
         break;
     case 0b00010000:
-        value = 0.25;
+        _value = 0.25;
         break;
     case 0b00001000:
-        value = -0.25;
+        _value = -0.25;
         break;
     case 0b00110000:
-        value = 0.375;
+        _value = 0.375;
         break;
     case 0b00001100:
-        value = -0.375;
+        _value = -0.375;
         break;
     case 0b00100000:
-        value = 0.5;
+        _value = 0.5;
         break;
     case 0b00000100:
-        value = -0.5;
+        _value = -0.5;
         break;
     case 0b01100000:
-        value = 0.625;
+        _value = 0.625;
         break;
     case 0b00000110:
-        value = -0.625;
+        _value = -0.625;
         break;
     case 0b01000000:
-        value = 0.75;
+        _value = 0.75;
         break;
     case 0b00000010:
-        value = -0.75;
+        _value = -0.75;
         break;
     case 0b11000000:
-        value = 0.875;
+        _value = 0.875;
         break;
     case 0b00000011:
-        value = -0.875;
+        _value = -0.875;
         break;
     case 0b10000000:
-        value = 1.0;
+        _value = 1.0;
         break;
     case 0b00000001:
-        value = -1.0;
+        _value = -1.0;
         break;
     default:
         break; // for other patterns return previous value
     }
-    return value;
+    return _value;
 }
 
 void Octoliner::pinModePort(uint16_t mask, uint8_t mode) {

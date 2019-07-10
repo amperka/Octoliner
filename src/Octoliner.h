@@ -1,7 +1,18 @@
+/*
+ * This file is a part of Dragster car set library.
+ *
+ * Defines: octoliner object - 8-point line-folowing sensor driver
+ * © Amperka LLC (https://amperka.com, dev@amperka.com)
+ * 
+ * Author: Vasily Basalaev <vasily@amperka.ru>
+ * Refactored by: Yury Botov <by@amperka.com>
+ * License: GPLv3, all text here must be included in any redistribution.
+ */
+
 #include <Arduino.h>
 
-#ifndef __GPIOEXPANDER_H__
-#define __GPIOEXPANDER_H__
+#ifndef __OCTOLINER_H__
+#define __OCTOLINER_H__
 
 #ifndef INPUT_PULLDOWN
 #define INPUT_PULLDOWN 0x3
@@ -72,6 +83,7 @@ public:
 
 private:
     uint8_t _i2caddress;
+    float _value;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);
     void writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value, bool sendStop = true);
     void writeCmd16BitData(IOcommand command, uint16_t data);
@@ -79,7 +91,6 @@ private:
     void writeCmd(IOcommand command, bool sendStop = true);
     int read16Bit();
     uint32_t read32bit();
-    float value;
 };
 
-#endif //__GPIOEXPANDER_H__
+#endif //__OCTOLINER_H__
