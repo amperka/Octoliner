@@ -146,6 +146,14 @@ int Octoliner::digitalRead(int pin) {
     return (digitalReadPort() >> pin) & 1;
 }
 
+void Octoliner::setSensitivity(uint8_t sense) {
+    analogWrite(_sensePin, sense);
+}
+
+void Octoliner::setBrightness(uint8_t brightness) {
+    analogWrite(_ledBrightnessPin, brightness);
+}
+
 float Octoliner::mapLine(int binaryLine[8]) {
     byte pattern = 0;
     // search min and max values

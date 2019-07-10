@@ -79,9 +79,13 @@ public:
     void digitalWritePort(uint16_t value);
     void pinModePort(uint16_t value, uint8_t mode);
     void adcSpeed(uint8_t speed);
+    void setSensitivity(uint8_t sense);
+    void setBrightness(uint8_t brightness);
     float mapLine(int binaryLine[8]);
 
 private:
+    const uint8_t _ledBrightnessPin = 9;
+    const uint8_t _sensePin = 0;
     uint8_t _i2caddress;
     float _value;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);
