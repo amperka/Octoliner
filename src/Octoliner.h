@@ -11,8 +11,8 @@
 
 #include <Arduino.h>
 
-#ifndef __GPIOEXPANDER_H__
-#define __GPIOEXPANDER_H__
+#ifndef __OCTOLINER_H__
+#define __OCTOLINER_H__
 
 #ifndef INPUT_PULLDOWN
 #define INPUT_PULLDOWN 0x3
@@ -93,4 +93,4 @@ private:
     uint32_t read32bit();
 };
 
-#endif //__GPIOEXPANDER_H__
+#endif //__OCTOLINER_H__
