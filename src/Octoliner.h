@@ -72,6 +72,7 @@ public:
 
 private:
     uint8_t _i2caddress;
+    float _value;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);
     void writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value, bool sendStop = true);
     void writeCmd16BitData(IOcommand command, uint16_t data);
@@ -79,7 +80,6 @@ private:
     void writeCmd(IOcommand command, bool sendStop = true);
     int read16Bit();
     uint32_t read32bit();
-    float value;
 };
 
 #endif //__GPIOEXPANDER_H__
