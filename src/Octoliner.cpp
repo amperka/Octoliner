@@ -1,10 +1,10 @@
 #include "Octoliner.h"
 #include <Wire.h>
 
-void Octoliner::begin(uint8_t value) {
+void Octoliner::begin(uint8_t brightness) {
     Wire.begin();
     pwmFreq(30000);
-    analogWrite(0, value);
+    analogWrite(0, brightness);
 }
 
 void Octoliner::begin(void) {
