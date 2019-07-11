@@ -73,11 +73,8 @@ int Octoliner::read16Bit() {
     int result = -1;
     uint8_t byteCount = 2;
     Wire.requestFrom(_i2caddress, byteCount);
-    uint16_t counter = 0xffff;
-    while (Wire.available() < byteCount) {
-        if (!(--counter))
-            return result;
-    }
+    if (Wire.available() != byteCount)
+        return result;
     result = Wire.read();
     result <<= 8;
     result |= Wire.read();
@@ -88,13 +85,8 @@ uint32_t Octoliner::read32bit() {
     uint32_t result = 0xffffffff; // https://www.youtube.com/watch?v=y73hyMP1a-E
     uint8_t byteCount = 4;
     Wire.requestFrom(_i2caddress, byteCount);
-    uint16_t counter = 0xffff;
-
-    while (Wire.available() < byteCount) {
-        if (!(--counter))
-            return result;
-    }
-
+    if (Wire.available() != byteCount)
+        return result;
     result = 0;
     for (uint8_t i = 0; i < byteCount - 1; ++i) {
         result |= Wire.read();
