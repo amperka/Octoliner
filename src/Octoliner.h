@@ -24,6 +24,10 @@
 #endif
 // DEFAULT_GPIOEXP_ADDR
 
+// Pins definiion
+constexpr uint8_t LED_BRIGHTNESS_PIN = 9;
+constexpr uint8_t SENSITIVITY_PIN = 0;
+
 enum IOcommand {
     WHO_AM_I //get UID
     ,
@@ -79,6 +83,8 @@ public:
     void digitalWritePort(uint16_t value);
     void pinModePort(uint16_t value, uint8_t mode);
     void adcSpeed(uint8_t speed);
+    void setSensitivity(uint8_t sense);
+    void setBrightness(uint8_t brightness);
     float mapLine(int binaryLine[8]);
 
 private:
