@@ -54,6 +54,8 @@ Reads all 8 channels raw data and interpret it to line position pattern.
 
 
 ### `float trackLine()`
+### `float trackLine(uint8_t pattern)`
+### `float trackLine(uint16_t* analogValues)`
 
 Estimates line position under the sensor and returns the value in the range from `-1.0` (on the left extreme) to `+1.0` (on the right extreme). When the line is under the sensor center, the return value is `0.0`.
 
