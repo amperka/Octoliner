@@ -24,7 +24,7 @@ For Amperka Dragster (6mm Octoliner to track distance) you can use values [230; 
 
 ### `uint16_t analogRead(uint8_t channel)`
 
-Reads the lightness signal from the given `channel`. Returns an integer in the range [0; 4096] as a result. The `channel` value is expected to be from `0` to `7`. Channel numbers is printed on board.
+Reads the lightness signal from the given `channel`. Returns an integer in the range [0; 4096] as a result. The `channel` value is expected to be from `0` to `7`. The channel numbers are printed on the board.
 
 - The more light reflected (more like white), the closer the value to `0`.
 - The less light reflected (more like black), the closer the value to `4096`.
