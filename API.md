@@ -22,7 +22,7 @@ Change load resistance value for IR sensors. An increase in load resistance lead
 
 For Amperka Dragster (6mm Octoliner to track distance) you can use values [230; 250]. If Octoliner closer to track you will be forced reduce value.
 
-### `int analogRead(uint8_t channel)`
+### `uint16_t analogRead(uint8_t channel)`
 
 Reads the lightness signal from the given `channel`. Returns an integer in the range [0; 4096] as a result. The `channel` value is expected to be from `0` to `7`. Channel numbers is printed on board.
 
