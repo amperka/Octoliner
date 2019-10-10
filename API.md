@@ -11,7 +11,7 @@ Constructs a new object. The `i2caddress` specifies the board I²C address which
 ### `void begin()`
 ### `void begin(TwoWire* wire)`
 
-Initializes given interface, prepares the board for communication. If the `wire` argument is omitted, the connection is started on hardware I2C#0. Method is initialise selected or default TwoWire interface. If TwoWire interface was initialise before this method reinitialise it.
+Initializes the given interface, prepares the board for communication. If the `wire` argument is omitted, the connection is started on hardware I2C#0. The method initializes the specified or default TwoWire interface. If it was initialized before this method reinitializes it.
 
 Call this method once, in your `setup()`.
 
