@@ -52,7 +52,6 @@ User can replace this method to own, for other line thickness or other mind.
 
 Reads all 8 channels raw data and interpret it to line position pattern.
 
-Use `patternMaker` for interpret current pattern.
 
 ### `float trackLine()`
 
