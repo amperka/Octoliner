@@ -4,7 +4,7 @@
 
 Create an object of type `Octoliner` to communicate with a particular Octoliner board.
 
-### `Octoliner(uint8_t i2caddress = 42)`
+### `Octoliner(uint8_t i2cAddress = 42)`
 
 Constructs a new object. The `i2caddress` specifies the board I²C address which is 42 factory-default but can be changed programmatically.
 
