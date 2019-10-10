@@ -29,7 +29,7 @@ Reads the lightness signal from the given `channel`. Returns an integer in the r
 - The more light reflected (more like white), the closer the value to `0`.
 - The less light reflected (more like black), the closer the value to `4096`.
 
-### `int analogRead(int* rawData)`
+### `void analogReadAll(uint16_t* analogValues)`
 
 Reads all 8 channels to user array rawData.
 
