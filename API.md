@@ -57,7 +57,9 @@ Reads all 8 channels raw data and interpret it to line position pattern.
 
 Estimates line position under the sensor and returns the value in the range from `-1.0` (on the left extreme) to `+1.0` (on the right extreme). When the line is under the sensor center, the return value is `0.0`.
 
-Use `pattermMaker` for convert current data to pattern and `patternDecoder` to interpret this pattern.
+If no argument is provided, the method reads all channels. Otherwise, the data provided is used as input data. The latter is useful when you use the data for other purposes as well (e.g., to visualize it on a display) because it avoids re-reading.
+
+If the current sensor reading does not allow understanding of the line position (some trash under the sensor or gone out of track), the previous successful estimation (which is cached) is returned. The starting value is `0.0`.
 
 ### `float trackLine(int* rawData)`
 
