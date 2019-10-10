@@ -63,16 +63,6 @@ If no argument is provided, the method reads all channels. Otherwise, the data p
 
 If the current sensor reading does not allow understanding of the line position (some trash under the sensor or gone out of track), the previous successful estimation (which is cached) is returned. The starting value is `0.0`.
 
-### `float trackLine(int* rawData)`
-
-Estimates line position under the sensor and returns the value in the range from `-1.0` (on the left extreme) to `+1.0` (on the right extreme). When the line is under the sensor center, the return value is `0.0`.
-
-Use `pattermMaker` for convert `rawData` to pattern and `patternDecoder` to interpret this pattern.
-
-### `float trackLine(uint8_t pattern)`
-
-Estimates line position under the sensor and returns the value in the range from `-1.0` (on the left extreme) to `+1.0` (on the right extreme). When the line is under the sensor center, the return value is `0.0`.
-
 Use `patternDecoder` for interpret given pattern.
 
 ### `void changeAddress(uint8_t newAddress)`
