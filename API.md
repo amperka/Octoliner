@@ -20,7 +20,6 @@ Call this method once, in your `setup()`.
 Change load resistance value for IR sensors. An increase in load resistance leads to decrease IR sensor sensitivity. 
 Adjusts the sensitivity of IR photocells. The `sense` argument should be in the range [0; 255], however, the effective values start from ~190. That is, use `190` for the minimal sensitivity, and `255` for the maximum. As a rule of thumb: use lower sensitivity if Octoliner is close to the surface and higher sensitivity if it is many millimeters above the surface.
 
-For Amperka Dragster (6mm Octoliner to track distance) you can use values [230; 250]. If Octoliner closer to track you will be forced reduce value.
 
 ### `uint16_t analogRead(uint8_t channel)`
 
