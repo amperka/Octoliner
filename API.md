@@ -63,7 +63,6 @@ If no argument is provided, the method reads all channels. Otherwise, the data p
 
 If the current sensor reading does not allow understanding of the line position (some trash under the sensor or gone out of track), the previous successful estimation (which is cached) is returned. The starting value is `0.0`.
 
-Use `patternDecoder` for interpret given pattern.
 
 ### `void changeAddress(uint8_t newAddress)`
 
