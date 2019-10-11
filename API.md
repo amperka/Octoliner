@@ -30,26 +30,28 @@ Reads the lightness signal from the given `channel`. Returns an integer in the r
 
 ### `void analogReadAll(uint16_t* analogValues)`
 
-Reads all 8 channels to user array rawData.
+Reads all 8 channels to an array pointed by `analogValues`. The array must be enough in length to hold 8 elements.
 
 ### `virtual uint8_t patternMaker(uint16_t* rawData)`
 
-Make 8-bit pattern from rawData array - one bit for one channel. "1" is dark and "0" is light. User can replace this method to own algorythm. For example, for using other trashold level.
+Makes a 8-bit pattern from the `analogValues` array. One bit for one channel. `1` is for dark and `0` is for light. The threshold value is computed automatically, as a part of the algorithm.
 
-### `virtual float patternDecoder(uint8_t pattern)`
+Override this method to use own algorithm. For example, using another threshold level.
 
-Interpret channels pattern as line position in range from `-1.0` (on the left extreme) to `+1.0` (on the right extreme).
+### `virtual float mapPatternToLine(uint8_t pattern) const`
+
+Interpret channel pattern as a line position in the range from `-1.0` (on the left extreme) to `+1.0` (on the right extreme).
 When the line is under the sensor center, the return value is `0.0`.
 
-The method is implemented in a way which makes it suitable to track a line of ~17 to 25 mm in thickness. The result is not fairly analog but comes at increments of ⅛. Nevertheless the return value is a good input for a PID-controller.
+The method is implemented in a way that makes it suitable to track a line of ~15 to 25 mm in thickness. The result is not fairly analog but comes at increments of ⅛. Nevertheless, the return value is a good input for a PID-controller.
 
-If the current sensor reading does not allow understanding of the line position (some trash under the sensor or gone out of track), the previous value is returned. The starting value is `0.0`.
+If the current sensor reading does not allow understanding of the line position (some trash under the sensor or gone out of track), the `NaN` value is returned.
 
-User can replace this method to own, for other line thickness or other mind.
+Override this method to deal with other line thicknesses or racing conditions.
 
 ### `uint8_t digitalReadAll()`
 
-Reads all 8 channels raw data and interpret it to line position pattern.
+Reads all 8 channels and interpret them as a binary pattern. One bit for one channel. `1` is for dark and `0` is for light.
 
 
 ### `float trackLine()`
