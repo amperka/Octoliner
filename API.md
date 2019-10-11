@@ -33,7 +33,7 @@ Reads the lightness signal from the given `channel`. Returns an integer in the r
 
 Reads all 8 channels to user array rawData.
 
-### `virtual uint8_t patternMaker(int* rawData)`
+### `virtual uint8_t patternMaker(uint16_t* rawData)`
 
 Make 8-bit pattern from rawData array - one bit for one channel. "1" is dark and "0" is light. User can replace this method to own algorythm. For example, for using other trashold level.
 
