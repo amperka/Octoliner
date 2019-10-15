@@ -32,7 +32,7 @@ Reads the lightness signal from the given `channel`. Returns an integer in the r
 
 Reads all 8 channels to an array pointed by `analogValues`. The array must be enough in length to hold 8 elements.
 
-### `virtual uint8_t patternMaker(uint16_t* rawData)`
+### `virtual uint8_t patternMaker(uint16_t* analogValues)`
 
 Makes a 8-bit pattern from the `analogValues` array. One bit for one channel. `1` is for dark and `0` is for light. The threshold value is computed automatically, as a part of the algorithm.
 
