@@ -21,7 +21,7 @@ Change load resistance value for IR sensors. An increase in load resistance lead
 Adjusts the sensitivity of IR photocells. The `sense` argument should be in the range [0; 255], however, the effective values start from ~190. That is, use `190` for the minimal sensitivity, and `255` for the maximum. As a rule of thumb: use lower sensitivity if Octoliner is close to the surface and higher sensitivity if it is many millimeters above the surface.
 
 
-### `uint16_t analogRead(uint8_t channel)`
+### `uint16_t analogReadOne(uint8_t channel)`
 
 Reads the lightness signal from the given `channel`. Returns an integer in the range [0; 4096] as a result. The `channel` value is expected to be from `0` to `7`. The channel numbers are printed on the board.
 
