@@ -16,7 +16,7 @@ GpioExpander::GpioExpander(uint8_t i2cAddress) {
     _i2cAddress = i2cAddress;
 }
 
-void GpioExpander::begin() {
+void GpioExpander::begin(void) {
     begin(&Wire);
 }
 
@@ -24,16 +24,16 @@ void GpioExpander::begin(TwoWire* wire) {
     _wire = wire;
 }
 
-void GpioExpander::reset() {
+void GpioExpander::reset(void) {
     writeCmd(RESET_SLAVE);
 }
 
-void GpioExpander::pinMode(int pin, uint8_t mode) {
+void GpioExpander::pinMode(uint8_t pin, uint8_t mode) {
     uint16_t sendData = 1 << pin;
     pinModePort(sendData, mode);
 }
 
-void GpioExpander::digitalWrite(int pin, bool value) {
+void GpioExpander::digitalWrite(uint8_t pin, bool value) {
     uint16_t sendData = 1 << pin;
     if (value) {
         writeCmd16BitData(DIGITAL_WRITE_HIGH, sendData);
@@ -60,24 +60,24 @@ void GpioExpander::analogReadResolution(uint8_t res) {
     _analogReadResolution = res;
 }
 
-void GpioExpander::analogWrite(int pin, uint16_t pulseWidth) {
+void GpioExpander::analogWrite(uint8_t pin, uint16_t pulseWidth) {
     uint16_t val = mapResolution(pulseWidth, _analogWriteResolution, 16);
-    writeCmdPin16Val(ANALOG_WRITE, (uint8_t)pin, val, true);
+    writeCmdPin16Val(ANALOG_WRITE, pin, val, true);
 }
 
-int GpioExpander::digitalRead(int pin) {
-    int result = digitalReadPort();
+int16_t GpioExpander::digitalRead(uint8_t pin) {
+    int16_t result = digitalReadPort();
     if (result >= 0) {
         result = ((result & (1 << pin)) ? 1 : 0); //:)
     }
     return result;
 }
 
-int GpioExpander::analogRead(int pin) {
-    writeCmdPin(ANALOG_READ, (uint8_t)pin, true);
-    int result = read16Bit();
+int16_t GpioExpander::analogRead(uint_8 pin) {
+    writeCmdPin(ANALOG_READ, pin, true);
+    int16_t result = read16Bit();
     if (result >= 0) {
-        result = (int)mapResolution((uint16_t)result, 12, _analogReadResolution);
+        result = (int16_t)mapResolution((uint16_t)result, 12, _analogReadResolution);
     }
     return result;
 }
@@ -142,7 +142,7 @@ void GpioExpander::digitalWritePort(uint16_t value) {
     writeCmd16BitData(DIGITAL_WRITE_LOW, ~value);
 }
 
-int GpioExpander::digitalReadPort() {
+int16_t GpioExpander::digitalReadPort() {
     // check. Need it? maybe true?
     writeCmd(DIGITAL_READ, false);
     return read16Bit();
@@ -154,7 +154,7 @@ void GpioExpander::pwmFreq(uint16_t freq) {
 
 uint32_t GpioExpander::getUID() {
     writeCmd(UID);
-    return read32bit();
+    return read32Bit();
 }
 
 void GpioExpander::adcSpeed(uint8_t speed) {
@@ -231,7 +231,7 @@ void GpioExpander::writeCmd(IOcommand command, bool sendStop) {
 }
 
 int8_t GpioExpander::readInt8Bit() {
-    int result = 0;
+    int8_t result = 0;
     uint8_t byteCount = 1;
     _wire->requestFrom(_i2cAddress, byteCount);
     if (_wire->available() != byteCount)
@@ -240,8 +240,8 @@ int8_t GpioExpander::readInt8Bit() {
     return result;
 }
 
-int GpioExpander::read16Bit() {
-    int result = -1;
+int16_t GpioExpander::read16Bit() {
+    int16_t result = -1;
     uint8_t byteCount = 2;
     _wire->requestFrom(_i2cAddress, byteCount);
     if (_wire->available() != byteCount)
@@ -252,7 +252,7 @@ int GpioExpander::read16Bit() {
     return result;
 }
 
-uint32_t GpioExpander::read32bit() {
+uint32_t GpioExpander::read32Bit() {
     // https://www.youtube.com/watch?v=y73hyMP1a-E
     uint32_t result = 0xffffffff;
     uint8_t byteCount = 4;

@@ -33,25 +33,25 @@
 
 class GpioExpander {
 public:
-    GpioExpander(uint8_t i2cAddress = 42);
-    void begin();
+    GpioExpander(uint8_t i2cAddress = DEFAULT_GPIOEXP_ADDR);
+    void begin(void);
     void begin(TwoWire* wire);
-    void reset();
-    void pinMode(int pin, uint8_t mode);
+    void reset(void);
+    void pinMode(uint8_t pin, uint8_t mode);
     void analogReadResolution(uint8_t res);
     void analogWriteResolution(uint8_t res);
-    void digitalWrite(int pin, bool value);
-    void analogWrite(int pin, uint16_t pulseWidth);
-    int digitalRead(int pin);
-    int analogRead(int pin);
+    void digitalWrite(uint8_t pin, bool value);
+    void analogWrite(uint8_t pin, uint16_t pulseWidth);
+    int16_t digitalRead(uint8_t pin);
+    int16_t analogRead(uint8_t pin);
     void changeAddr(uint8_t newAddr);
     void changeAddrWithUID(uint8_t newAddr);
-    void saveAddr();
+    void saveAddr(void);
     void pinModePort(uint16_t value, uint8_t mode);
     void digitalWritePort(uint16_t value);
-    int digitalReadPort();
+    int16_t digitalReadPort(void);
     void pwmFreq(uint16_t freq);
-    uint32_t getUID();
+    uint32_t getUID(void);
     void adcSpeed(uint8_t speed);
     void adcFilter(bool enable);
     void setEncoderPins(uint8_t encoder, uint8_t pinA, uint8_t pinB);
@@ -67,9 +67,9 @@ private:
     void writeCmd16BitData(IOcommand command, uint16_t data);
     void writeCmd8BitData(IOcommand command, uint8_t data);
     void writeCmd(IOcommand command, bool sendStop = true);
-    int8_t readInt8Bit();
-    int read16Bit();
-    uint32_t read32bit();
+    int8_t readInt8Bit(void);
+    int16_t read16Bit(void); // Name change to readInt16Bit?
+    uint32_t read32Bit(void);
     uint16_t mapResolution(uint16_t value, uint8_t from, uint8_t to);
 };
 
