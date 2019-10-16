@@ -1,5 +1,3 @@
-// библиотека для работы с модулями I²C
-#include <Wire.h>
 // библиотека для работы cо сборкой датчиков линии
 #include <Octoliner.h>
 
@@ -9,19 +7,15 @@ Octoliner octoliner(42);
 void setup() {
   // открываем Serial-порт
   Serial.begin(115200);
-  // начало работы с модулями I²C
-  Wire.begin();
   // начало работы с датчиками линии
   octoliner.begin();
   // выставляем чувствительность фотоприёмников в диапазоне от 0 до 255
-  octoliner.setSensitivity(200);
-  // выставляем яркость свечения ИК-светодиодов в диапазоне от 0 до 255
-  octoliner.setBrightness(255);
+  octoliner.setSensitivity(208);
 }
 
 void loop() {
   // считываем значение с датчиков линии
-  for (int i = 0; i < 8; i++) {
+  for (uint8_t i = 0; i < 8; i++) {
     // выводим значения в Serial-порт
     Serial.print(octoliner.analogRead(i));
     Serial.print("\t");
