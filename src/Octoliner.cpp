@@ -101,7 +101,7 @@ float Octoliner::trackLine(void) {
 
 float Octoliner::trackLine(uint8_t pattern) {
     float result = mapPatternToLine(pattern);
-    result == NAN ? _previousValue : result;
+    result = isnan(result) ? _previousValue : result;
     _previousValue = result;
     return result;
 }
