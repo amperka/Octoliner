@@ -1,7 +1,7 @@
 /*
- * This file is a part of Dragster car set library
+ * This file is a part of Octoliner library.
  *
- * Realise: octoliner object - 8-point line-folowing sensor driver
+ * Product page: https://amperka.ru/product/zelo-folow-line-sensor
  * © Amperka LLC (https://amperka.com, dev@amperka.com)
  * 
  * Author: Vasily Basalaev <vasily@amperka.ru>
@@ -10,292 +10,114 @@
  */
 
 #include "Octoliner.h"
-#include <Wire.h>
 
-void Octoliner::begin(uint8_t brightness) {
-    Wire.begin();
-    pwmFreq(30000);
-    analogWrite(0, brightness);
-    _value = 0;
+Octoliner::Octoliner(uint8_t i2caddress)
+    : GpioExpander(i2caddress) {
+    _previousValue = 0.;
 }
 
-void Octoliner::begin(void) {
-    Wire.begin();
-    pwmFreq(30000);
-    analogWrite(0, 200);
-    _value = 0;
+void Octoliner::begin() {
+    Octoliner::begin(&Wire);
 }
 
-void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {
-    Wire.beginTransmission(_i2caddress);
-    Wire.write((uint8_t)command);
-    Wire.write(pin);
-    Wire.endTransmission(sendStop);
-}
-
-void Octoliner::writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t data, bool sendStop) {
-    Wire.beginTransmission(_i2caddress);
-    Wire.write((uint8_t)command);
-    Wire.write(pin);
-    uint8_t temp;
-    temp = (data >> 8) & 0xff;
-    Wire.write(temp); // Send MSB of 'data' to the device
-    temp = data & 0xff;
-    Wire.write(temp); // Send LSB of 'data' to the device
-    Wire.endTransmission(sendStop);
-}
-
-void Octoliner::writeCmd16BitData(IOcommand command, uint16_t data) {
-    Wire.beginTransmission(_i2caddress); // Address set on class instantiation
-    Wire.write((uint8_t)command);
-    uint8_t temp;
-    temp = (data >> 8) & 0xff;
-    Wire.write(temp); // Send MSB of 'data' to the device
-    temp = data & 0xff;
-    Wire.write(temp); // Send LSB of 'data' to the device
-    Wire.endTransmission();
-}
-
-void Octoliner::writeCmd8BitData(IOcommand command, uint8_t data) {
-    Wire.beginTransmission(_i2caddress); // Address set on class instantiation
-    Wire.write((uint8_t)command);
-    Wire.write(data); // Data/setting to be sent to device
-    Wire.endTransmission();
-}
-
-void Octoliner::writeCmd(IOcommand command, bool sendStop) {
-    Wire.beginTransmission(_i2caddress);
-    Wire.write((uint8_t)command);
-    Wire.endTransmission(sendStop);
-}
-
-int Octoliner::read16Bit() {
-    int result = -1;
-    uint8_t byteCount = 2;
-    Wire.requestFrom(_i2caddress, byteCount);
-    if (Wire.available() != byteCount)
-        return result;
-    result = Wire.read();
-    result <<= 8;
-    result |= Wire.read();
-    return result;
-}
-
-uint32_t Octoliner::read32bit() {
-    uint32_t result = 0xffffffff; // https://www.youtube.com/watch?v=y73hyMP1a-E
-    uint8_t byteCount = 4;
-    Wire.requestFrom(_i2caddress, byteCount);
-    if (Wire.available() != byteCount)
-        return result;
-    result = 0;
-    for (uint8_t i = 0; i < byteCount - 1; ++i) {
-        result |= Wire.read();
-        result <<= 8;
-    }
-    result |= Wire.read();
-    return result;
-}
-
-Octoliner::Octoliner() {
-    _i2caddress = 42;
-}
-
-Octoliner::Octoliner(uint8_t i2caddress) {
-    _i2caddress = i2caddress;
-}
-
-void Octoliner::digitalWritePort(uint16_t data) {
-    writeCmd16BitData(DIGITAL_WRITE_HIGH, data);
-    writeCmd16BitData(DIGITAL_WRITE_LOW, ~data);
-}
-
-void Octoliner::digitalWrite(int pin, bool state) {
-    uint16_t sendData = 1 << pin;
-    if (state) {
-        writeCmd16BitData(DIGITAL_WRITE_HIGH, sendData);
-    } else {
-        writeCmd16BitData(DIGITAL_WRITE_LOW, sendData);
-    }
-}
-
-int Octoliner::digitalReadPort() {
-    writeCmd(DIGITAL_READ, false);
-    int readPort = read16Bit();
-    uint8_t result = 0;
-    result |= (readPort >> 1) & 0b00000001;
-    result |= (readPort >> 1) & 0b00000010;
-    result |= (readPort >> 1) & 0b00000100;
-    result |= (readPort >> 5) & 0b00001000;
-    result |= (readPort >> 3) & 0b00010000;
-    result |= (readPort >> 1) & 0b00100000;
-    result |= (readPort << 2) & 0b01000000;
-    result |= (readPort << 2) & 0b10000000;
-    // инвертировать порядок битов
-    return result;
-}
-
-int Octoliner::digitalRead(int pin) {
-    return (digitalReadPort() >> pin) & 1;
+void Octoliner::begin(TwoWire* wire) {
+    wire->begin();
+    GpioExpander::begin(wire);
+    GpioExpander::pwmFreq(8000); // ~ 250 different pwm values
+    GpioExpander::pinMode(_IRLedsPin, OUTPUT);
+    GpioExpander::digitalWrite(_IRLedsPin, HIGH);
 }
 
 void Octoliner::setSensitivity(uint8_t sense) {
-    analogWrite(SENSITIVITY_PIN, sense);
+    analogWrite(_sensePin, sense);
 }
 
-void Octoliner::setBrightness(uint8_t brightness) {
-    analogWrite(LED_BRIGHTNESS_PIN, brightness);
+int16_t Octoliner::analogRead(uint8_t sensor) {
+    return (int16_t)GpioExpander::analogRead(_sensorPinMap[sensor & 0x07]);
 }
 
-float Octoliner::mapLine(int binaryLine[8]) {
-    byte pattern = 0;
+void Octoliner::analogReadAll(int16_t* analogValues) {
+    for (uint8_t i = 0; i < 8; i++) {
+        analogValues[i] = Octoliner::analogRead(i);
+    }
+}
+
+uint8_t Octoliner::mapAnalogToPattern(int16_t* analogValues) const {
+    uint8_t pattern = 0;
+
     // search min and max values
-    int min = 32767;
-    int max = 0;
-    for (int i = 0; i < 8; i++) {
-        if (binaryLine[i] < min)
-            min = binaryLine[i];
-        if (binaryLine[i] > max)
-            max = binaryLine[i];
+    int16_t min = 32767;
+    int16_t max = 0;
+    for (uint8_t i = 0; i < 8; i++) {
+        if (analogValues[i] < min)
+            min = analogValues[i];
+        if (analogValues[i] > max)
+            max = analogValues[i];
     }
-    // calculate border level
-    int threshold = min + (max - min) / 2;
+    // calculate threshold level
+    int16_t threshold = min + (max - min) / 2;
     // create bit pattern
-    for (int i = 0; i < 8; i++) {
-        pattern = (pattern << 1) + ((binaryLine[i] < threshold) ? 0 : 1);
+    for (uint8_t i = 0; i < 8; i++) {
+        pattern = (pattern << 1) + ((analogValues[i] < threshold) ? 0 : 1);
     }
-    switch (pattern) {
-    case 0b00011000:
-        _value = 0;
-        break;
-    case 0b00010000:
-        _value = 0.25;
-        break;
-    case 0b00001000:
-        _value = -0.25;
-        break;
-    case 0b00110000:
-        _value = 0.375;
-        break;
-    case 0b00001100:
-        _value = -0.375;
-        break;
-    case 0b00100000:
-        _value = 0.5;
-        break;
-    case 0b00000100:
-        _value = -0.5;
-        break;
-    case 0b01100000:
-        _value = 0.625;
-        break;
-    case 0b00000110:
-        _value = -0.625;
-        break;
-    case 0b01000000:
-        _value = 0.75;
-        break;
-    case 0b00000010:
-        _value = -0.75;
-        break;
-    case 0b11000000:
-        _value = 0.875;
-        break;
-    case 0b00000011:
-        _value = -0.875;
-        break;
-    case 0b10000000:
-        _value = 1.0;
-        break;
-    case 0b00000001:
-        _value = -1.0;
-        break;
-    default:
-        break; // for other patterns return previous value
+    return pattern;
+}
+
+float Octoliner::mapPatternToLine(uint8_t binaryLine) const {
+    switch (binaryLine) {
+    case 0b00011000: return 0;
+    case 0b00010000: return 0.25;
+    case 0b00111000: return 0.25;
+    case 0b00001000: return -0.25;
+    case 0b00011100: return -0.25;
+    case 0b00110000: return 0.375;
+    case 0b00001100: return -0.375;
+    case 0b00100000: return 0.5;
+    case 0b01110000: return 0.5;
+    case 0b00000100: return -0.5;
+    case 0b00001110: return -0.5;
+    case 0b01100000: return 0.625;
+    case 0b11100000: return 0.625;
+    case 0b00000110: return -0.625;
+    case 0b00000111: return -0.625;
+    case 0b01000000: return 0.75;
+    case 0b11110000: return 0.75;
+    case 0b00000010: return -0.75;
+    case 0b00001111: return -0.75;
+    case 0b11000000: return 0.875;
+    case 0b00000011: return -0.875;
+    case 0b10000000: return 1.0;
+    case 0b00000001: return -1.0;
+    default: return NAN;
     }
-    return _value;
+    return NAN;
 }
 
-void Octoliner::pinModePort(uint16_t mask, uint8_t mode) {
-    if (mode == INPUT) {
-        writeCmd16BitData(PORT_MODE_INPUT, mask);
-    } else if (mode == OUTPUT) {
-        writeCmd16BitData(PORT_MODE_OUTPUT, mask);
-    } else if (mode == INPUT_PULLUP) {
-        writeCmd16BitData(PORT_MODE_PULLUP, mask);
-    } else if (mode == INPUT_PULLDOWN) {
-        writeCmd16BitData(PORT_MODE_PULLDOWN, mask);
-    }
+float Octoliner::trackLine(void) {
+    int16_t analogValues[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    analogReadAll(analogValues);
+    return trackLine(analogValues);
 }
 
-void Octoliner::pinMode(int pin, uint8_t mode) {
-    uint16_t sendData = 1 << pin;
-    pinModePort(sendData, mode);
+float Octoliner::trackLine(uint8_t pattern) {
+    float result = mapPatternToLine(pattern);
+    result == NAN ? _previousValue : result;
+    _previousValue = result;
+    return result;
 }
 
-void Octoliner::analogWrite(int pin, uint8_t pulseWidth) {
-    uint16_t val = map(pulseWidth, 0, 255, 0, 65535);
-    writeCmdPin16Val(ANALOG_WRITE, (uint8_t)pin, val, true);
+float Octoliner::trackLine(int16_t* analogValues) {
+    return trackLine(mapAnalogToPattern(analogValues));
 }
 
-int Octoliner::analogRead(int pin) {
-    uint8_t mapper[8] = { 4, 5, 6, 8, 7, 3, 2, 1 };
-    writeCmdPin(ANALOG_READ, (uint8_t)mapper[pin], true);
-    return read16Bit();
+uint8_t Octoliner::digitalReadAll(void) {
+    int16_t analogValues[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+    analogReadAll(analogValues);
+    return mapAnalogToPattern(analogValues);
 }
 
-void Octoliner::pwmFreq(uint16_t freq) {
-    writeCmd16BitData(PWM_FREQ, freq);
-}
+/*---------  Deprecated ----------*/
 
-void Octoliner::adcSpeed(uint8_t speed) {
-    // speed must be < 8. Smaller is faster, but dirty
-    writeCmd8BitData(ADC_SPEED, speed);
-}
-
-void Octoliner::changeAddr(uint8_t newAddr) {
-    writeCmd8BitData(CHANGE_I2C_ADDR, newAddr);
-    _i2caddress = newAddr;
-}
-
-void Octoliner::changeAddrWithUID(uint8_t newAddr) {
-    uint32_t uid = getUID();
-
-    delay(1);
-
-    Wire.beginTransmission(_i2caddress); // Address set on class instantiation
-
-    Wire.write((uint8_t)SEND_MASTER_READED_UID);
-    uint8_t temp;
-    temp = (uid >> 24) & 0xff;
-    Wire.write(temp); // Send MSB of 'uid' to the device
-
-    temp = (uid >> 16) & 0xff;
-    Wire.write(temp); // Send 2nd byte of 'uid' to the device
-
-    temp = (uid >> 8) & 0xff;
-    Wire.write(temp); // Send 3rd byte of 'uid' to the device
-
-    temp = (uid)&0xff;
-    Wire.write(temp); // Send LSB of 'uid' to the device
-    Wire.endTransmission();
-
-    delay(1);
-
-    writeCmd8BitData(CHANGE_I2C_ADDR_IF_UID_OK, newAddr);
-    _i2caddress = newAddr;
-
-    delay(1);
-}
-
-void Octoliner::saveAddr() {
-    writeCmd(SAVE_I2C_ADDR);
-}
-
-void Octoliner::reset() {
-    writeCmd(RESET);
-}
-
-uint32_t Octoliner::getUID() {
-    writeCmd(WHO_AM_I);
-    return read32bit();
+float Octoliner::mapLine(int* analogValues) {
+    return trackLine(analogValues);
 }
