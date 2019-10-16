@@ -18,7 +18,7 @@
 
 class Octoliner : public GpioExpander {
 public:
-    Octoliner(uint8_t i2caddress = 42);
+    Octoliner(uint8_t i2cAddress = 42);
     void begin();
     void begin(TwoWire* wire);
     void setSensitivity(uint8_t sense);

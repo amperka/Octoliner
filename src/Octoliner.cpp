@@ -11,8 +11,8 @@
 
 #include "Octoliner.h"
 
-Octoliner::Octoliner(uint8_t i2caddress)
-    : GpioExpander(i2caddress) {
+Octoliner::Octoliner(uint8_t i2cAddress)
+    : GpioExpander(i2cAddress) {
     _previousValue = 0.;
 }
 
