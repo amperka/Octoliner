@@ -22,7 +22,7 @@ public:
     void begin();
     void begin(TwoWire* wire);
     void setSensitivity(uint8_t sense);
-    int16_t analogReadOne(uint8_t sensor);
+    int16_t analogRead(uint8_t sensor);
     void analogReadAll(int16_t* analogValues);
     uint8_t digitalReadAll(void);
 
@@ -34,7 +34,6 @@ public:
     virtual float mapPatternToLine(uint8_t pattern) const;
 
     // Deprecated mapLine
-    int analogRead(uint8_t sensor);
     float mapLine(int* analogValues);
 
 private:
