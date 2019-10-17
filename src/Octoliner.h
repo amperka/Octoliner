@@ -16,7 +16,7 @@
 #ifndef __OCTOLINER_H__
 #define __OCTOLINER_H__
 
-class Octoliner : public GpioExpander {
+class Octoliner : private GpioExpander {
 public:
     Octoliner(uint8_t i2cAddress = 42);
     void begin();
@@ -32,6 +32,9 @@ public:
 
     virtual uint8_t mapAnalogToPattern(int16_t* analogValues) const;
     virtual float mapPatternToLine(uint8_t pattern) const;
+
+    void changeAddr(uint8_t newAddr);
+    void saveAddr(void);
 
     // Deprecated mapLine
     float mapLine(int* analogValues);

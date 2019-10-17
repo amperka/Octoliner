@@ -120,8 +120,16 @@ uint8_t Octoliner::digitalReadAll(void) {
     return mapAnalogToPattern(analogValues);
 }
 
+void Octoliner::changeAddr(uint8_t newAddr) { 
+    GpioExpander::changeAddr(newAddr);
+}
+
+void Octoliner::saveAddr(void) {
+    GpioExpander::saveAddr();
+}
+
 /*---------  Deprecated ----------*/
 
 float Octoliner::mapLine(int* analogValues) {
-    return trackLine(analogValues);
+    return trackLine((int16_t*)analogValues);
 }
