@@ -27,7 +27,7 @@ void Octoliner::begin() {
 void Octoliner::begin(TwoWire* wire) {
     wire->begin();
     GpioExpander::begin(wire);
-    GpioExpander::pwmFreq(8000); // ~ 250 different pwm values
+    GpioExpander::pwmFreq(8000); // ~ 250 pwm levels
     GpioExpander::pinMode(_IRLedsPin, OUTPUT);
     GpioExpander::digitalWrite(_IRLedsPin, HIGH);
 }
