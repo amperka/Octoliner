@@ -11,6 +11,10 @@
 
 #include "Octoliner.h"
 
+const uint8_t Octoliner::_sensorPinMap[] = {
+    4, 5, 6, 8, 7, 3, 2, 1
+};
+
 Octoliner::Octoliner(uint8_t i2cAddress)
     : GpioExpander(i2cAddress) {
     _previousValue = 0.;

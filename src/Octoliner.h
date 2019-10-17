@@ -37,11 +37,9 @@ public:
     float mapLine(int* analogValues);
 
 private:
-    const uint8_t _IRLedsPin = 9;
-    const uint8_t _sensePin = 0;
-    const uint8_t _sensorPinMap[8] = {
-        4, 5, 6, 8, 7, 3, 2, 1
-    };
+    static constexpr uint8_t _IRLedsPin = 9;
+    static constexpr uint8_t _sensePin = 0;
+    static const uint8_t _sensorPinMap[8];
     float _previousValue;
 };
 
