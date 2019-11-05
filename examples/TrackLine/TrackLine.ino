@@ -1,30 +1,28 @@
-// библиотека для работы cо сборкой датчиков линии
+/*
+ * This example shows how to track a line under the sensor by getting values
+ * in the [-1.0; +1.0] range and print them to Serial Monitor.
+ */
+
+// Include the interfacing library
 #include <Octoliner.h>
 
-// создаём объект для работы с датчиками линии
+// Create an object to work with Octoliner with
+// the address 42 (decimal, default)
 Octoliner octoliner(42);
 
 void setup() {
-  // открываем Serial-порт
-  Serial.begin(115200);;
-  // начало работы с датчиками линии
+  // Open Serial-port with 115200 baud rate. Do not forget to set the
+  // same rate in Serial Monitor
+  Serial.begin(115200);
+  // Configure hardware and set up the sensor
   octoliner.begin();
-  // выставляем чувствительность фотоприёмников в диапазоне от 0 до 255
+  // Set sensitivity to 208 of 255
   octoliner.setSensitivity(208);
 }
 
 void loop() {
-  // массив для хранения показателей с датчиков линии
-  int16_t dataSensors[8];
-  // считываем значение с датчиков линии
-  for (uint8_t i = 0; i < 8; i++) {
-    // выводим значения в Serial-порт
-    dataSensors[i] = octoliner.analogRead(i);
-    Serial.print(dataSensors[i]);
-    Serial.print("\t");
-  }
-  Serial.println(octoliner.trackLine(dataSensors));
-  Serial.println();
-  // ждём пол секунды
-  delay(500);
+  // Find the line and log its position to Serial
+  Serial.println(octoliner.trackLine());
+  // Repeat in 0.2 seconds
+  delay(200);
 }
