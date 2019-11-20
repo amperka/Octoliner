@@ -1,19 +1,45 @@
-Octoliner
-=========
+# Octoliner
 
-Библиотека Arduino для [модуля 8 датчиков линии (Zelo-модуль)](http://amperka.ru/product/zelo-folow-line-sensor).
+Arduino library to interface with the Amperka [Octoliner](https://my.amperka.com/products/octoliner) 8-channel line sensor.
 
-Установка библиотеки
-====================
+## Installation
 
-В Arduino IDE выберите пункт меню «Скетч» → «Импортировать библиотеку» →
-«Добавить библиотеку…». В появившемся окне выберите скачаный архив с
-библиотекой. Установка завершена.
+- Download the library “Source code (zip)” from the [Releases](https://github.com/amperka/Octoliner/releases) page on GitHub.
+- In Arduino IDE hit “Sketch → Include Library → Add .ZIP Library...” and select the file downloaded.
 
-This Arduino library relates to [8 line sensors module (Zelo-module)](http://amperka.ru/product/zelo-folow-line-sensor).
+## API
 
-Installation
-====================
+Quickstart example:
 
-Open Arduino IDE. Choose "Scketch" → "Iport library" → "Add library…".
-In appeared window choose downloaded zip.
+```cpp
+// Include two libraries required to work with the module
+#include <Wire.h>
+#include <Octoliner.h>
+
+// Sensor on the standard bus and address
+Octoliner octoliner;
+
+void setup() {
+  Serial.begin(115200);
+  octoliner.begin();
+
+  // Set sensitivity to 200 of 255
+  octoliner.setSensitivity(200);
+}
+
+void loop() {
+  // Every 0.5 seconds...
+  delay(500);
+
+  // ...scan all 8 channels and output
+  // the values to Serial Monitor
+  for (int i = 0; i < 8; i++) {
+    Serial.print(octoliner.analogRead(i));
+    Serial.print("\t"); // separate with TABs
+  }
+
+  Serial.println(); // line feed at the end
+}
+```
+
+See full [API reference in API.md](./API.md).
