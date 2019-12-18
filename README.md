@@ -1,6 +1,6 @@
 # Octoliner
 
-Arduino library to interface with the Amperka [Octoliner](https://my.amperka.com/products/octoliner) 8-channel line sensor.
+Arduino library to interface with the Amperka [Octoliner](https://my.amperka.com/modules/octoliner) 8-channel line sensor.
 
 ## Installation
 
