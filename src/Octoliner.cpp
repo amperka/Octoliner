@@ -18,6 +18,7 @@ const uint8_t Octoliner::_sensorPinMap[] = {
 Octoliner::Octoliner(uint8_t i2cAddress)
     : GpioExpander(i2cAddress) {
     _previousValue = 0.;
+    _sensitivity = 208;
 }
 
 void Octoliner::begin() {
@@ -33,7 +34,8 @@ void Octoliner::begin(TwoWire* wire) {
 }
 
 void Octoliner::setSensitivity(uint8_t sense) {
-    analogWrite(_sensePin, sense);
+    _sensitivity = sense;
+    analogWrite(_sensePin, _sensitivity);
 }
 
 int16_t Octoliner::analogRead(uint8_t sensor) {
@@ -97,7 +99,7 @@ float Octoliner::mapPatternToLine(uint8_t binaryLine) const {
     return NAN;
 }
 
-float Octoliner::trackLine(void) {
+float Octoliner::trackLine() {
     int16_t analogValues[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     analogReadAll(analogValues);
     return trackLine(analogValues);
@@ -114,13 +116,65 @@ float Octoliner::trackLine(int16_t* analogValues) {
     return trackLine(mapAnalogToPattern(analogValues));
 }
 
-uint8_t Octoliner::digitalReadAll(void) {
+uint8_t Octoliner::digitalReadAll() {
     int16_t analogValues[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     analogReadAll(analogValues);
     return mapAnalogToPattern(analogValues);
 }
 
-void Octoliner::changeAddr(uint8_t newAddr) { 
+uint8_t Octoliner::countOfBlack() {
+    uint8_t count = 0;
+    for (uint8_t i = 0; i < 8; i++) {
+        if (analogRead(i) > BLACK_THRESHOLD)
+            count++;
+    }
+    return count;
+}
+
+bool Octoliner::optimizeSensitivityOnBlack() {
+    uint8_t sens;
+    uint8_t sensitivityBackup = getSensitivity();
+    // Give more time to settle RCL circuit at first time
+    setSensitivity(255);
+    delay(200);
+    // Starting at the highest possible sensitivity read all channels at each iteration
+    // to find the level when all the channels become black
+    for (sens = 255; sens > MIN_SENSITIVITY; sens -= 5) {
+        setSensitivity(sens);
+        // Give some time to settle RCL circuit
+        delay(100);
+        if (countOfBlack() == 8)
+            break;
+    }
+    if (sens <= MIN_SENSITIVITY) { // Somthing is broken
+        setSensitivity(sensitivityBackup);
+        return false;
+    }
+
+    // Forward fine search to find the level when at least one sensor value will
+    // become back white
+    for (/*sens = sens*/; sens < 255; sens++) {
+        setSensitivity(sens);
+        delay(50);
+        if (countOfBlack() != 8)
+            break;
+    }
+    if (sens == 255) {
+        // Environment has changed since the start of the process
+        setSensitivity(sensitivityBackup);
+        return false;
+    }
+    // Magic 5 step back to fall back to all-eight-black
+    sens -= 5;
+    setSensitivity(sens);
+    return true;
+}
+
+uint8_t Octoliner::getSensitivity() const {
+    return _sensitivity;
+}
+
+void Octoliner::changeAddr(uint8_t newAddr) {
     GpioExpander::changeAddr(newAddr);
 }
 

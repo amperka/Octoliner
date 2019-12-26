@@ -23,6 +23,8 @@ saveAddr		KEYWORD2
 setSensitivity		KEYWORD2
 mapLine	KEYWORD2
 trackLine		KEYWORD2
+setSensitivity      KEYWORD2
+optimizeSensitivityOnBlack     KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
