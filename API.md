@@ -62,6 +62,20 @@ If no argument is provided, the method reads all channels. Otherwise, the data p
 
 If the current sensor reading does not allow understanding of the line position (some trash under the sensor or gone out of track), the previous successful estimation (which is cached) is returned. The starting value is `0.0`.
 
+### `bool optimizeSensitivityOnBlack()`
+
+Performs automatic sensitivity set up. Before the optimization, place Octoliner over the track in a way where _all_ its sensors point to the black line/field. If it is physically impossible, point all the sensors to the void. The algorithm automatically adjusts the sensitivity for the current seen black level.
+
+The method returns `true` if succeed. If the calibration fails it returns `false`, for example, if the sensors are placed over a contrast black/white or a completely white surface. In the case of failure, the previous sensitivity level is left intact.
+
+To get the sensitivity set, use `getSensitivity`.
+
+The measurement time depends on the blackness level. The typical value is less than 1 sec, the maximum is 3 sec.
+
+### `uint8_t getSensitivity() const`
+
+Returns the current sensitivity level previously set with `setSensitivity` or `optimizeSensitivityOnBlack`.
+
 ### `void changeAddress(uint8_t newAddress)`
 
 Changes the I²C address of the module. The change is in effect only while the board is powered on. If you want to save it permanently call the `saveAddress` method.

@@ -16,33 +16,44 @@
 #ifndef __OCTOLINER_H__
 #define __OCTOLINER_H__
 
+// Minimum adequate sensitivity. For all values below this, channels always
+// see black even on mirror/white surfaces
+constexpr uint8_t MIN_SENSITIVITY = 120;
+// All analog values above this are considered black
+constexpr int16_t BLACK_THRESHOLD = 100;
+
 class Octoliner : private GpioExpander {
 public:
     Octoliner(uint8_t i2cAddress = 42);
     void begin();
     void begin(TwoWire* wire);
-    void setSensitivity(uint8_t sense);
     int16_t analogRead(uint8_t sensor);
     void analogReadAll(int16_t* analogValues);
-    uint8_t digitalReadAll(void);
+    uint8_t digitalReadAll();
 
-    float trackLine(void);
+    float trackLine();
     float trackLine(uint8_t pattern);
     float trackLine(int16_t* analogValues);
 
     virtual uint8_t mapAnalogToPattern(int16_t* analogValues) const;
     virtual float mapPatternToLine(uint8_t pattern) const;
 
+    bool optimizeSensitivityOnBlack();
+    void setSensitivity(uint8_t sense);
+    uint8_t getSensitivity() const;
+
     void changeAddr(uint8_t newAddr);
-    void saveAddr(void);
+    void saveAddr();
 
     // Deprecated mapLine
     float mapLine(int* analogValues);
 
 private:
+    uint8_t countOfBlack();
     static constexpr uint8_t _IRLedsPin = 9;
     static constexpr uint8_t _sensePin = 0;
     static const uint8_t _sensorPinMap[8];
+    uint8_t _sensitivity;
     float _previousValue;
 };
 
