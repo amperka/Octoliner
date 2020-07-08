@@ -46,8 +46,10 @@ public:
     void changeAddr(uint8_t newAddr);
     void saveAddr();
 
-    // Deprecated mapLine
+    // Deprecated methods ------------
+    void begin(int sense);
     float mapLine(int* analogValues);
+    // -------------------------------
 
 private:
     uint8_t countOfBlack();
