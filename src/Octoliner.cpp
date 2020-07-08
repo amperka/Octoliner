@@ -38,6 +38,10 @@ void Octoliner::setSensitivity(uint8_t sense) {
     analogWrite(_sensePin, _sensitivity);
 }
 
+void Octoliner::analogReadResolution(uint8_t resolution) {
+    GpioExpander::analogReadResolution(resolution);
+}
+
 int16_t Octoliner::analogRead(uint8_t sensor) {
     return (int16_t)GpioExpander::analogRead(_sensorPinMap[sensor & 0x07]);
 }
