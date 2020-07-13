@@ -31,16 +31,12 @@ void Octoliner::begin(TwoWire* wire) {
     GpioExpander::pwmFreq(8000); // ~ 250 pwm levels
     GpioExpander::pinMode(_IRLedsPin, OUTPUT);
     GpioExpander::digitalWrite(_IRLedsPin, HIGH);
-    analogReadResolution(10);
+    GpioExpander::analogReadResolution(10);
 }
 
 void Octoliner::setSensitivity(uint8_t sense) {
     _sensitivity = sense;
     analogWrite(_sensePin, _sensitivity);
-}
-
-void Octoliner::analogReadResolution(uint8_t resolution) {
-    GpioExpander::analogReadResolution(resolution);
 }
 
 int16_t Octoliner::analogRead(uint8_t sensor) {
@@ -196,5 +192,5 @@ float Octoliner::mapLine(int* analogValues) {
 void Octoliner::begin(int sense) {
     _sensitivity = sense;
     Octoliner::begin(&Wire);
-    analogReadResolution(12);
+    GpioExpander::analogReadResolution(12);
 }

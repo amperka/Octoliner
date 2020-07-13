@@ -27,7 +27,7 @@ public:
     Octoliner(uint8_t i2cAddress = 42);
     void begin();
     void begin(TwoWire* wire);
-    void analogReadResolution(uint8_t resolution);
+
     int16_t analogRead(uint8_t sensor);
     void analogReadAll(int16_t* analogValues);
     uint8_t digitalReadAll();

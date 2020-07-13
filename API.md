@@ -20,14 +20,6 @@ Call this method once, in your `setup()`.
 Change load resistance value for IR sensors. An increase in load resistance leads to decrease IR sensor sensitivity. 
 Adjusts the sensitivity of IR photocells. The `sense` argument should be in the range [0; 255], however, the effective values start from ~190. That is, use `190` for the minimal sensitivity, and `255` for the maximum. As a rule of thumb: use lower sensitivity if Octoliner is close to the surface and higher sensitivity if it is many millimeters above the surface.
 
-### `void analogReadResolution(uint8_t resolution)`
-
-Sets ADC resolution. The `resolution` parameter is the number of ADC bits. This value may be:
-
-- `8` for [0...255] ADC range
-- `10` for [0...1023] ADC range
-- `12` for [0...4095] ADC range
-
 ### `int16_t analogRead(uint8_t channel)`
 
 Reads the lightness signal from the given `channel`. Returns an integer in the range [0; 4096] as a result. The `channel` value is expected to be from `0` to `7`. The channel numbers are printed on the board.
