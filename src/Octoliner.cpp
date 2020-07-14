@@ -235,7 +235,7 @@ uint32_t Octoliner::getUID() {
 }
 
 void Octoliner::setSensitivity(uint8_t sensitivity) {
-    analogWrite(_sensitivityPin, sensitivity);
+    Octoliner::analogWrite(_sensitivityPin, sensitivity);
 }
 
 void Octoliner::setBrightness(uint8_t brightness) {
