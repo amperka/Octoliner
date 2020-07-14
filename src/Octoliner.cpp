@@ -4,7 +4,7 @@
 void Octoliner::begin(uint8_t value) {
     Wire.begin();
     pwmFreq(30000);
-    analogWrite(0, value);
+    setSensitivity(value);
 }
 
 void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {
@@ -230,4 +230,8 @@ void Octoliner::reset() {
 uint32_t Octoliner::getUID() {
     writeCmd(WHO_AM_I);
     return read32bit();
+}
+
+void Octoliner::setSensitivity(uint8_t sensitivity) {
+    analogWrite(_sensitivityPin, sensitivity)
 }

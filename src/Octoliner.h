@@ -46,8 +46,11 @@ public:
     uint32_t getUID();
     void adcSpeed(uint8_t speed);
     float mapLine(int binaryLine[8]);
+    void setSensitivity(uint8_t sensitivity);
 
 private:
+    constexpr uint8_t _sensitivityPin = 0;
+
     uint8_t _i2caddress;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);
     void writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value, bool sendStop = true);
