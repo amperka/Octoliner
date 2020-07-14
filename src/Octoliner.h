@@ -45,7 +45,7 @@ public:
     int analogRead(int pin); //, uint8_t avgCount = 2);
     uint32_t getUID();
     void adcSpeed(uint8_t speed);
-    float mapLine(int binaryLine[8]);
+    float mapLine(int16_t binaryLine[8]);
     void setSensitivity(uint8_t sensitivity);
     void setBrightness(uint8_t brightness); // dummy
 
