@@ -49,7 +49,7 @@ public:
     void setSensitivity(uint8_t sensitivity);
 
 private:
-    constexpr uint8_t _sensitivityPin = 0;
+    static constexpr uint8_t _sensitivityPin = 0;
 
     uint8_t _i2caddress;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);
