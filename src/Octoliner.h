@@ -1,3 +1,14 @@
+/*
+ * This file is a part of Octoliner library.
+ *
+ * Product page: https://amperka.ru/product/zelo-folow-line-sensor
+ * © Amperka LLC (https://amperka.com, dev@amperka.com)
+ * 
+ * Author: Vasily Basalaev <vasily@amperka.ru>
+ * Refactored by: Yury Botov <by@amperka.com>
+ * License: GPLv3, all text here must be included in any redistribution.
+ */
+
 #include <arduino.h>
 
 #ifndef __OCTOLINER_H__
