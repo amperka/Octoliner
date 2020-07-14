@@ -37,7 +37,7 @@ class Octoliner {
 public:
     Octoliner();
     Octoliner(uint8_t i2caddress);
-    void begin(uint8_t value);
+    void begin(uint8_t value = 208);
     void changeAddr(uint8_t newAddr);
     void changeAddrWithUID(uint8_t newAddr);
     void saveAddr();
