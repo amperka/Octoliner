@@ -68,7 +68,7 @@ private:
     int digitalRead(int pin);
     int digitalReadPort();
     void digitalWritePort(uint16_t value);
-    void pinModePort(uint16_t value, uint8_t mode);    
+    void pinModePort(uint16_t value, uint8_t mode);
 };
 
 #endif //_GPIO_EXPANDER_

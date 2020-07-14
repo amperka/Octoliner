@@ -149,30 +149,54 @@ float Octoliner::mapLine(int16_t binaryLine[8]) {
     }
     // interpret pattern
     switch (pattern) {
-        case 0b00011000: return 0;
-        case 0b00010000: return 0.25;
-        case 0b00111000: return 0.25;
-        case 0b00001000: return -0.25;
-        case 0b00011100: return -0.25;
-        case 0b00110000: return 0.375;
-        case 0b00001100: return -0.375;
-        case 0b00100000: return 0.5;
-        case 0b01110000: return 0.5;
-        case 0b00000100: return -0.5;
-        case 0b00001110: return -0.5;
-        case 0b01100000: return 0.625;
-        case 0b11100000: return 0.625;
-        case 0b00000110: return -0.625;
-        case 0b00000111: return -0.625;
-        case 0b01000000: return 0.75;
-        case 0b11110000: return 0.75;
-        case 0b00000010: return -0.75;
-        case 0b00001111: return -0.75;
-        case 0b11000000: return 0.875;
-        case 0b00000011: return -0.875;
-        case 0b10000000: return 1.0;
-        case 0b00000001: return -1.0;
-        default: return NAN;
+    case 0b00011000:
+        return 0;
+    case 0b00010000:
+        return 0.25;
+    case 0b00111000:
+        return 0.25;
+    case 0b00001000:
+        return -0.25;
+    case 0b00011100:
+        return -0.25;
+    case 0b00110000:
+        return 0.375;
+    case 0b00001100:
+        return -0.375;
+    case 0b00100000:
+        return 0.5;
+    case 0b01110000:
+        return 0.5;
+    case 0b00000100:
+        return -0.5;
+    case 0b00001110:
+        return -0.5;
+    case 0b01100000:
+        return 0.625;
+    case 0b11100000:
+        return 0.625;
+    case 0b00000110:
+        return -0.625;
+    case 0b00000111:
+        return -0.625;
+    case 0b01000000:
+        return 0.75;
+    case 0b11110000:
+        return 0.75;
+    case 0b00000010:
+        return -0.75;
+    case 0b00001111:
+        return -0.75;
+    case 0b11000000:
+        return 0.875;
+    case 0b00000011:
+        return -0.875;
+    case 0b10000000:
+        return 1.0;
+    case 0b00000001:
+        return -1.0;
+    default:
+        return NAN;
     }
     return NAN;
 }
