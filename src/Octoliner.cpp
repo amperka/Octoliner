@@ -87,10 +87,6 @@ uint32_t Octoliner::read32bit() {
     return result;
 }
 
-Octoliner::Octoliner() {
-    _i2caddress = 42;
-}
-
 Octoliner::Octoliner(uint8_t i2caddress) {
     _i2caddress = i2caddress;
 }
