@@ -5,6 +5,8 @@ void Octoliner::begin(uint8_t value) {
     Wire.begin();
     pwmFreq(30000);
     setSensitivity(value);
+    Octoliner::pinMode(_brightnessPin, OUTPUT);
+    Octoliner::digitalWrite(_brightnessPin, HIGH);
 }
 
 void Octoliner::writeCmdPin(IOcommand command, uint8_t pin, bool sendStop) {
@@ -234,4 +236,8 @@ uint32_t Octoliner::getUID() {
 
 void Octoliner::setSensitivity(uint8_t sensitivity) {
     analogWrite(_sensitivityPin, sensitivity);
+}
+
+void Octoliner::setBrightness(uint8_t brightness) {
+    (void)brightness;
 }

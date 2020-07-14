@@ -47,9 +47,11 @@ public:
     void adcSpeed(uint8_t speed);
     float mapLine(int binaryLine[8]);
     void setSensitivity(uint8_t sensitivity);
+    void setBrightness(uint8_t brightness); // dummy
 
 private:
     static constexpr uint8_t _sensitivityPin = 0;
+    static constexpr uint8_t _brightnessPin = 9;
 
     uint8_t _i2caddress;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);
