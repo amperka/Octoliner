@@ -52,8 +52,8 @@ void Octoliner::writeCmd(IOcommand command, bool sendStop) {
     Wire.endTransmission(sendStop);
 }
 
-int Octoliner::read16Bit() {
-    int result = -1;
+uint16_t Octoliner::read16Bit() {
+    uint16_t result = 0xffff;
     uint8_t byteCount = 2;
     Wire.requestFrom(_i2caddress, byteCount);
     uint16_t counter = 0xffff;
@@ -61,6 +61,7 @@ int Octoliner::read16Bit() {
         if (!(--counter))
             return result;
     }
+    result = 0;
     result = Wire.read();
     result <<= 8;
     result |= Wire.read();
@@ -96,7 +97,7 @@ void Octoliner::digitalWritePort(uint16_t value) {
     writeCmd16BitData(DIGITAL_WRITE_LOW, ~value);
 }
 
-void Octoliner::digitalWrite(int pin, bool value) {
+void Octoliner::digitalWrite(uint8_t pin, bool value) {
     uint16_t sendData = 1 << pin;
     if (value) {
         writeCmd16BitData(DIGITAL_WRITE_HIGH, sendData);
@@ -105,9 +106,9 @@ void Octoliner::digitalWrite(int pin, bool value) {
     }
 }
 
-int Octoliner::digitalReadPort() {
+uint8_t Octoliner::digitalReadPort() {
     writeCmd(DIGITAL_READ, false);
-    int readPort = read16Bit();
+    uint16_t readPort = read16Bit();
     uint8_t result = 0;
     result |= (readPort >> 1) & 0b00000001;
     result |= (readPort >> 1) & 0b00000010;
@@ -121,12 +122,8 @@ int Octoliner::digitalReadPort() {
     return result;
 }
 
-int Octoliner::digitalRead(int pin) {
-    int result = digitalReadPort();
-    if (result >= 0) {
-        result = ((result & (1 << pin)) ? 1 : 0); //:)
-    }
-    return result;
+uint8_t Octoliner::digitalRead(uint8_t pin) {
+    return ((digitalReadPort() & (1 << pin)) ? 1 : 0);
 }
 
 float Octoliner::mapLine(int16_t binaryLine[8]) {
@@ -213,19 +210,19 @@ void Octoliner::pinModePort(uint16_t value, uint8_t mode) {
     }
 }
 
-void Octoliner::pinMode(int pin, uint8_t mode) {
+void Octoliner::pinMode(uint8_t pin, uint8_t mode) {
     uint16_t sendData = 1 << pin;
     pinModePort(sendData, mode);
 }
 
-void Octoliner::analogWrite(int pin, uint8_t pulseWidth) {
+void Octoliner::analogWrite(uint8_t pin, uint8_t pulseWidth) {
     uint16_t val = map(pulseWidth, 0, 255, 0, 65535);
-    writeCmdPin16Val(ANALOG_WRITE, (uint8_t)pin, val, true);
+    writeCmdPin16Val(ANALOG_WRITE, pin, val, true);
 }
 
-int Octoliner::analogRead(int pin) {
+int16_t Octoliner::analogRead(uint8_t pin) {
     uint8_t mapper[8] = { 4, 5, 6, 8, 7, 3, 2, 1 };
-    writeCmdPin(ANALOG_READ, (uint8_t)mapper[pin], true);
+    writeCmdPin(ANALOG_READ, mapper[pin], true);
     return read16Bit();
 }
 

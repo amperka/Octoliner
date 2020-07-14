@@ -41,7 +41,7 @@ public:
     void changeAddrWithUID(uint8_t newAddr);
     void saveAddr();
     void reset();
-    int analogRead(int pin); //, uint8_t avgCount = 2);
+    int16_t analogRead(uint8_t pin); //, uint8_t avgCount = 2);
     uint32_t getUID();
     void adcSpeed(uint8_t speed);
     float mapLine(int16_t binaryLine[8]);
@@ -58,15 +58,15 @@ private:
     void writeCmd16BitData(IOcommand command, uint16_t data);
     void writeCmd8BitData(IOcommand command, uint8_t data);
     void writeCmd(IOcommand command, bool sendStop = true);
-    int read16Bit();
+    uint16_t read16Bit();
     uint32_t read32bit();
 
-    void digitalWrite(int pin, bool value);
-    void pinMode(int pin, uint8_t mode);
-    void analogWrite(int pin, uint8_t pulseWidth);
+    void digitalWrite(uint8_t pin, bool value);
+    void pinMode(uint8_t pin, uint8_t mode);
+    void analogWrite(uint8_t pin, uint8_t pulseWidth);
     void pwmFreq(uint16_t freq);
-    int digitalRead(int pin);
-    int digitalReadPort();
+    uint8_t digitalRead(uint8_t pin);
+    uint8_t digitalReadPort();
     void digitalWritePort(uint16_t value);
     void pinModePort(uint16_t value, uint8_t mode);
 };
