@@ -1,7 +1,7 @@
 #include <arduino.h>
 
-#ifndef _GPIO_EXPANDER_
-#define _GPIO_EXPANDER_
+#ifndef __OCTOLINER_H__
+#define __OCTOLINER_H__
 
 #ifndef INPUT_PULLDOWN
 #define INPUT_PULLDOWN 0x3
@@ -71,4 +71,4 @@ private:
     void pinModePort(uint16_t value, uint8_t mode);
 };
 
-#endif //_GPIO_EXPANDER_
+#endif //__OCTOLINER_H__
