@@ -38,20 +38,12 @@ public:
     Octoliner();
     Octoliner(uint8_t i2caddress);
     void begin(uint8_t value);
-    void digitalWrite(int pin, bool value);
-    void pinMode(int pin, uint8_t mode);
-    void analogWrite(int pin, uint8_t pulseWidth);
-    void pwmFreq(uint16_t freq);
     void changeAddr(uint8_t newAddr);
     void changeAddrWithUID(uint8_t newAddr);
     void saveAddr();
     void reset();
-    int digitalRead(int pin);
     int analogRead(int pin); //, uint8_t avgCount = 2);
     uint32_t getUID();
-    int digitalReadPort();
-    void digitalWritePort(uint16_t value);
-    void pinModePort(uint16_t value, uint8_t mode);
     void adcSpeed(uint8_t speed);
     float mapLine(int binaryLine[8]);
 
@@ -64,6 +56,15 @@ private:
     void writeCmd(IOcommand command, bool sendStop = true);
     int read16Bit();
     uint32_t read32bit();
+
+    void digitalWrite(int pin, bool value);
+    void pinMode(int pin, uint8_t mode);
+    void analogWrite(int pin, uint8_t pulseWidth);
+    void pwmFreq(uint16_t freq);
+    int digitalRead(int pin);
+    int digitalReadPort();
+    void digitalWritePort(uint16_t value);
+    void pinModePort(uint16_t value, uint8_t mode);    
 };
 
 #endif //_GPIO_EXPANDER_
