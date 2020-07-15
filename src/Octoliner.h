@@ -1,7 +1,18 @@
+/*
+ * This file is a part of Octoliner library.
+ *
+ * Product page: https://amperka.ru/product/zelo-folow-line-sensor
+ * © Amperka LLC (https://amperka.com, dev@amperka.com)
+ * 
+ * Author: Vasily Basalaev <vasily@amperka.ru>
+ * Refactored by: Yury Botov <by@amperka.com>
+ * License: GPLv3, all text here must be included in any redistribution.
+ */
+
 #include <arduino.h>
 
-#ifndef _GPIO_EXPANDER_
-#define _GPIO_EXPANDER_
+#ifndef __OCTOLINER_H__
+#define __OCTOLINER_H__
 
 #ifndef INPUT_PULLDOWN
 #define INPUT_PULLDOWN 0x3
@@ -35,35 +46,41 @@ enum IOcommand {
 
 class Octoliner {
 public:
-    Octoliner();
-    Octoliner(uint8_t i2caddress);
-    void begin(uint8_t value);
-    void digitalWrite(int pin, bool value);
-    void pinMode(int pin, uint8_t mode);
-    void analogWrite(int pin, uint8_t pulseWidth);
-    void pwmFreq(uint16_t freq);
+    Octoliner(uint8_t i2caddress = 42);
+    void begin(uint8_t value = 208);
     void changeAddr(uint8_t newAddr);
     void changeAddrWithUID(uint8_t newAddr);
     void saveAddr();
     void reset();
-    int digitalRead(int pin);
-    int analogRead(int pin); //, uint8_t avgCount = 2);
+    int16_t analogRead(uint8_t pin); //, uint8_t avgCount = 2);
     uint32_t getUID();
-    int digitalReadPort();
-    void digitalWritePort(uint16_t value);
-    void pinModePort(uint16_t value, uint8_t mode);
     void adcSpeed(uint8_t speed);
-    float mapLine(int binaryLine[8]);
+    float mapLine(int16_t binaryLine[8]);
+    void setSensitivity(uint8_t sensitivity);
+    void setBrightness(uint8_t brightness); // dummy
 
 private:
+    static constexpr uint8_t _sensitivityPin = 0;
+    static constexpr uint8_t _brightnessPin = 9;
+
     uint8_t _i2caddress;
+    float _lastPosition;
     void writeCmdPin(IOcommand command, uint8_t pin, bool sendStop = true);
     void writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value, bool sendStop = true);
     void writeCmd16BitData(IOcommand command, uint16_t data);
     void writeCmd8BitData(IOcommand command, uint8_t data);
     void writeCmd(IOcommand command, bool sendStop = true);
-    int read16Bit();
+    uint16_t read16Bit();
     uint32_t read32bit();
+
+    void digitalWrite(uint8_t pin, bool value);
+    void pinMode(uint8_t pin, uint8_t mode);
+    void analogWrite(uint8_t pin, uint8_t pulseWidth);
+    void pwmFreq(uint16_t freq);
+    uint8_t digitalRead(uint8_t pin);
+    uint8_t digitalReadPort();
+    void digitalWritePort(uint16_t value);
+    void pinModePort(uint16_t value, uint8_t mode);
 };
 
-#endif //_GPIO_EXPANDER_
+#endif //__OCTOLINER_H__
