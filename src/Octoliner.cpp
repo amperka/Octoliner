@@ -16,8 +16,11 @@ void Octoliner::begin(uint8_t value) {
     Wire.begin();
     pwmFreq(30000);
     setSensitivity(value);
+
+    // switch-on IR-leds permanently
     Octoliner::pinMode(_brightnessPin, OUTPUT);
     Octoliner::digitalWrite(_brightnessPin, HIGH);
+    
     _lastPosition = 0;
 }
 
@@ -34,27 +37,27 @@ void Octoliner::writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value,
     Wire.write(pin);
     uint8_t temp;
     temp = (value >> 8) & 0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
     temp = value & 0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
     Wire.endTransmission(sendStop);
 }
 
 void Octoliner::writeCmd16BitData(IOcommand command, uint16_t data) {
-    Wire.beginTransmission(_i2caddress); // Address set on class instantiation
+    Wire.beginTransmission(_i2caddress);
     Wire.write((uint8_t)command);
     uint8_t temp;
     temp = (data >> 8) & 0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
     temp = data & 0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
     Wire.endTransmission();
 }
 
 void Octoliner::writeCmd8BitData(IOcommand command, uint8_t data) {
-    Wire.beginTransmission(_i2caddress); // Address set on class instantiation
+    Wire.beginTransmission(_i2caddress);
     Wire.write((uint8_t)command);
-    Wire.write(data); // Data/setting to be sent to device
+    Wire.write(data);
     Wire.endTransmission();
 }
 
@@ -244,7 +247,6 @@ void Octoliner::pwmFreq(uint16_t freq) {
 }
 
 void Octoliner::adcSpeed(uint8_t speed) {
-    // speed must be < 8. Smaller is faster, but dirty
     writeCmd8BitData(ADC_SPEED, speed);
 }
 
@@ -258,21 +260,21 @@ void Octoliner::changeAddrWithUID(uint8_t newAddr) {
 
     delay(1);
 
-    Wire.beginTransmission(_i2caddress); // Address set on class instantiation
+    Wire.beginTransmission(_i2caddress);
 
     Wire.write((uint8_t)SEND_MASTER_READED_UID);
     uint8_t temp;
     temp = (uid >> 24) & 0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
 
     temp = (uid >> 16) & 0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
 
     temp = (uid >> 8) & 0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
 
     temp = (uid)&0xff;
-    Wire.write(temp); // Data/setting to be sent to device
+    Wire.write(temp);
     Wire.endTransmission();
 
     delay(1);

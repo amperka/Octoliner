@@ -26,7 +26,7 @@
 
 enum IOcommand {
     WHO_AM_I, //get UID
-    RESET, // reset
+    RESET,
     CHANGE_I2C_ADDR, // change I2C-address manually
     SAVE_I2C_ADDR, // Save current address to flash
     PORT_MODE_INPUT, // set pins to INPUT mode
@@ -34,10 +34,10 @@ enum IOcommand {
     PORT_MODE_PULLDOWN, // .. with pull-down internal resistor
     PORT_MODE_OUTPUT, // set pins to OUTPUT mode
     DIGITAL_READ, // read port (all of 8 pins)
-    DIGITAL_WRITE_HIGH, //
-    DIGITAL_WRITE_LOW, //
-    ANALOG_WRITE, //
-    ANALOG_READ, //
+    DIGITAL_WRITE_HIGH,
+    DIGITAL_WRITE_LOW,
+    ANALOG_WRITE,
+    ANALOG_READ,
     PWM_FREQ, // common pwm frequency to all pins
     ADC_SPEED,
     SEND_MASTER_READED_UID,
@@ -52,9 +52,9 @@ public:
     void changeAddrWithUID(uint8_t newAddr);
     void saveAddr();
     void reset();
-    int16_t analogRead(uint8_t pin); //, uint8_t avgCount = 2);
+    int16_t analogRead(uint8_t pin);
     uint32_t getUID();
-    void adcSpeed(uint8_t speed);
+    void adcSpeed(uint8_t speed); // speed must be < 8. Smaller is faster, but dirty
     float mapLine(int16_t binaryLine[8]);
     void setSensitivity(uint8_t sensitivity);
     void setBrightness(uint8_t brightness); // dummy
