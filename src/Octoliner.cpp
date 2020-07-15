@@ -20,7 +20,7 @@ void Octoliner::begin(uint8_t value) {
     // switch-on IR-leds permanently
     Octoliner::pinMode(_brightnessPin, OUTPUT);
     Octoliner::digitalWrite(_brightnessPin, HIGH);
-    
+
     _lastPosition = 0;
 }
 
