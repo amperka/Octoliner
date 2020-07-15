@@ -35,22 +35,16 @@ void Octoliner::writeCmdPin16Val(IOcommand command, uint8_t pin, uint16_t value,
     Wire.beginTransmission(_i2caddress);
     Wire.write((uint8_t)command);
     Wire.write(pin);
-    uint8_t temp;
-    temp = (value >> 8) & 0xff;
-    Wire.write(temp);
-    temp = value & 0xff;
-    Wire.write(temp);
+    Wire.write((value >> 8) & 0xff);
+    Wire.write(value & 0xff);
     Wire.endTransmission(sendStop);
 }
 
 void Octoliner::writeCmd16BitData(IOcommand command, uint16_t data) {
     Wire.beginTransmission(_i2caddress);
     Wire.write((uint8_t)command);
-    uint8_t temp;
-    temp = (data >> 8) & 0xff;
-    Wire.write(temp);
-    temp = data & 0xff;
-    Wire.write(temp);
+    Wire.write((data >> 8) & 0xff);
+    Wire.write(data & 0xff);
     Wire.endTransmission();
 }
 
@@ -263,18 +257,10 @@ void Octoliner::changeAddrWithUID(uint8_t newAddr) {
     Wire.beginTransmission(_i2caddress);
 
     Wire.write((uint8_t)SEND_MASTER_READED_UID);
-    uint8_t temp;
-    temp = (uid >> 24) & 0xff;
-    Wire.write(temp);
-
-    temp = (uid >> 16) & 0xff;
-    Wire.write(temp);
-
-    temp = (uid >> 8) & 0xff;
-    Wire.write(temp);
-
-    temp = (uid)&0xff;
-    Wire.write(temp);
+    Wire.write((uid >> 24) & 0xff);
+    Wire.write((uid >> 16) & 0xff);
+    Wire.write((uid >> 8) & 0xff);
+    Wire.write(uid & 0xff);
     Wire.endTransmission();
 
     delay(1);
