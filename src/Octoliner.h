@@ -77,9 +77,6 @@ private:
     void pinMode(uint8_t pin, uint8_t mode);
     void analogWrite(uint8_t pin, uint8_t pulseWidth);
     void pwmFreq(uint16_t freq);
-    uint8_t digitalRead(uint8_t pin);
-    uint8_t digitalReadPort();
-    void digitalWritePort(uint16_t value);
     void pinModePort(uint16_t value, uint8_t mode);
 };
 

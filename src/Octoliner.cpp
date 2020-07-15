@@ -104,11 +104,6 @@ Octoliner::Octoliner(uint8_t i2caddress) {
     _i2caddress = i2caddress;
 }
 
-void Octoliner::digitalWritePort(uint16_t value) {
-    writeCmd16BitData(DIGITAL_WRITE_HIGH, value);
-    writeCmd16BitData(DIGITAL_WRITE_LOW, ~value);
-}
-
 void Octoliner::digitalWrite(uint8_t pin, bool value) {
     uint16_t sendData = 1 << pin;
     if (value) {
@@ -116,26 +111,6 @@ void Octoliner::digitalWrite(uint8_t pin, bool value) {
     } else {
         writeCmd16BitData(DIGITAL_WRITE_LOW, sendData);
     }
-}
-
-uint8_t Octoliner::digitalReadPort() {
-    writeCmd(DIGITAL_READ, false);
-    uint16_t readPort = read16Bit();
-    uint8_t result = 0;
-    result |= (readPort >> 1) & 0b00000001;
-    result |= (readPort >> 1) & 0b00000010;
-    result |= (readPort >> 1) & 0b00000100;
-    result |= (readPort >> 5) & 0b00001000;
-    result |= (readPort >> 3) & 0b00010000;
-    result |= (readPort >> 1) & 0b00100000;
-    result |= (readPort << 2) & 0b01000000;
-    result |= (readPort << 2) & 0b10000000;
-    // инвертировать порядок битов
-    return result;
-}
-
-uint8_t Octoliner::digitalRead(uint8_t pin) {
-    return ((digitalReadPort() & (1 << pin)) ? 1 : 0);
 }
 
 float Octoliner::mapLine(int16_t binaryLine[8]) {
