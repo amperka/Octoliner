@@ -14,15 +14,8 @@
 #ifndef __OCTOLINER_H__
 #define __OCTOLINER_H__
 
-#ifndef INPUT_PULLDOWN
-#define INPUT_PULLDOWN 0x3
-#endif
-//INPUT_PULLDOWN
-
-#ifndef DEFAULT_GPIOEXP_ADDR
-#define DEFAULT_GPIOEXP_ADDR 42
-#endif
-// DEFAULT_GPIOEXP_ADDR
+static constexpr uint8_t INPUT_PULLDOWN = 0x3;
+static constexpr uint8_t DEFAULT_ADDR = 42;
 
 enum IOcommand {
     WHO_AM_I, //get UID
@@ -46,7 +39,7 @@ enum IOcommand {
 
 class Octoliner {
 public:
-    Octoliner(uint8_t i2caddress = 42);
+    Octoliner(uint8_t i2caddress = DEFAULT_ADDR);
     void begin(uint8_t value = 208);
     void changeAddr(uint8_t newAddr);
     void changeAddrWithUID(uint8_t newAddr);
