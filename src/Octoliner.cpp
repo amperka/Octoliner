@@ -78,7 +78,7 @@ uint16_t Octoliner::read16Bit() {
 }
 
 uint32_t Octoliner::read32bit() {
-    uint32_t result = 0xffffffff; // https://www.youtube.com/watch?v=y73hyMP1a-E
+    uint32_t result = 0xffffffff;
     uint8_t byteCount = 4;
     Wire.requestFrom(_i2caddress, byteCount);
     uint16_t counter = 0xffff;
