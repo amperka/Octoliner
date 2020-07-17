@@ -15,7 +15,7 @@
 #define __OCTOLINER_H__
 
 static constexpr uint8_t INPUT_PULLDOWN = 0x3;
-static constexpr uint8_t DEFAULT_ADDR = 42;
+static constexpr uint8_t defaultAddr = 42;
 
 enum IOcommand {
     WHO_AM_I, //get UID
