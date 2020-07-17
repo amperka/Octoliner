@@ -14,7 +14,8 @@
 #ifndef __OCTOLINER_H__
 #define __OCTOLINER_H__
 
-static constexpr uint8_t INPUT_PULLDOWN = 0x3;
+#define INPUT_PULLDOWN 0x3
+
 static constexpr uint8_t defaultAddr = 42;
 
 enum IOcommand {
@@ -39,7 +40,7 @@ enum IOcommand {
 
 class Octoliner {
 public:
-    Octoliner(uint8_t i2caddress = DEFAULT_ADDR);
+    Octoliner(uint8_t i2caddress = defaultAddr);
     void begin(uint8_t value = 208);
     void changeAddr(uint8_t newAddr);
     void changeAddrWithUID(uint8_t newAddr);
